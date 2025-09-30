@@ -269,6 +269,7 @@ const ModelsList = () => {
                     <Link 
                       to={`/models/${model.id}`} 
                       className="btn btn-primary"
+                      onClick={() => handleSelect(model)}
                     >
                       View Details
                     </Link>
