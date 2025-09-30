@@ -10,14 +10,89 @@ const CarBuilder = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [totalPrice, setTotalPrice] = useState(0);
   // modal for payment estimator
-  /*const [showEstimator, setShowEstimator] = useState(false);
+  const [showEstimator, setShowEstimator] = useState(false);
   const openEstimator = () => setShowEstimator(true);
-  const closeEstimator = () => setShowEstimator(false);*/
+  const closeEstimator = () => setShowEstimator(false);
+  // payment estimator
+  // Add these states after your existing state declarations
+  const [paymentType, setPaymentType] = useState('lease'); // 'lease' or 'finance'
+  const [leaseDetails, setLeaseDetails] = useState({
+    cashDown: '',
+    creditScore: '',
+    termLength: '',
+    annualMileage: ''
+  });
+  const [financeDetails, setFinanceDetails] = useState({
+    cashDown: '',
+    creditScore: '',
+    termLength: ''
+  });
 
   // display print options for Print Build button
   const handlePrint = () => {
     window.print();
   };
+  
+  // payment estimator function
+  // Add these functions after your existing functions
+const calculateLeasePayment = () => {
+  if (!selectedModel || !selectedTrim) return 0;
+  
+  const basePrice = selectedModel.calculateBasePrice();
+  const trimPrice = selectedTrim.startingPrice;
+  const packagesTotal = selectedPackages.reduce((sum, pkg) => sum + pkg.cost, 0);
+  const totalPrice = basePrice + trimPrice + packagesTotal;
+  
+  // Simple lease calculation (you can make this more sophisticated)
+  const capitalizedCost = totalPrice - (parseInt(leaseDetails.cashDown) || 0);
+  const residualValue = totalPrice * 0.6; // 60% residual
+  const depreciation = capitalizedCost - residualValue;
+  const moneyFactor = getMoneyFactor(leaseDetails.creditScore);
+  const financeCharge = (capitalizedCost + residualValue) * moneyFactor;
+  
+  return Math.round((depreciation + financeCharge) / (parseInt(leaseDetails.termLength) || 36));
+};
+
+const calculateFinancePayment = () => {
+  if (!selectedModel || !selectedTrim) return 0;
+  
+  const basePrice = selectedModel.calculateBasePrice();
+  const trimPrice = selectedTrim.startingPrice;
+  const packagesTotal = selectedPackages.reduce((sum, pkg) => sum + pkg.cost, 0);
+  const totalPrice = basePrice + trimPrice + packagesTotal;
+  
+  const loanAmount = totalPrice - (parseInt(financeDetails.cashDown) || 0);
+  const interestRate = getInterestRate(financeDetails.creditScore);
+  const termMonths = parseInt(financeDetails.termLength) || 60;
+  
+  const monthlyRate = interestRate / 100 / 12;
+  const payment = loanAmount * (monthlyRate * Math.pow(1 + monthlyRate, termMonths)) / 
+                  (Math.pow(1 + monthlyRate, termMonths) - 1);
+  
+  return Math.round(payment);
+};
+
+const getMoneyFactor = (creditScore) => {
+  const scores = {
+    'excellent': 0.0008,
+    'good': 0.0012,
+    'fair': 0.0018,
+    'poor': 0.0025,
+    'extremely-poor': 0.0035
+  };
+  return scores[creditScore] || 0.0018;
+};
+
+const getInterestRate = (creditScore) => {
+  const rates = {
+    'excellent': 3.5,
+    'good': 4.5,
+    'fair': 6.0,
+    'poor': 8.5,
+    'extremely-poor': 12.0
+  };
+  return rates[creditScore] || 6.0;
+};
 
   // calculate total price dynamically
 useEffect(() => {
@@ -360,13 +435,254 @@ useEffect(() => {
               </div>
               <div className="d-grid mt-3">
                 {/*<button className="btn btn-success">Search Inventory</button>*/}
-                <button className="btn btn-outline-secondary d-rpint-none" onClick={handlePrint}>Print Build</button>
-                <button className="btn btn-outline-primary mt-2">Use Payment Estimator</button>
+                <button className="btn btn-outline-secondary d-print-none" onClick={handlePrint}>Print Build</button>
+                <button className="btn btn-outline-primary mt-2" onClick={openEstimator}>Use Payment Estimator</button>           
+              </div>
+            </div>      
+          </div>      
+        </div>
+{/* Payment Estimator Modal */}
+{showEstimator && (
+  <>
+    <div className="modal fade show d-block" role="dialog" aria-modal="true" style={{ zIndex: 1050 }}>
+      <div className="modal-dialog modal-xl modal-dialog-centered">
+        <div className="modal-content">
+          <div className="modal-header">
+            <h5 className="modal-title">Payment Estimator</h5>
+            <button 
+              type="button" 
+              className="btn-close" 
+              onClick={() => setShowEstimator(false)}
+              aria-label="Close"
+            ></button>
+          </div>
+          <div className="modal-body">
+            <div className="row">
+              {/* Left Side - Inputs */}
+              <div className="col-md-6">
+                {/* Payment Type Tabs */}
+                <ul className="nav nav-tabs mb-4">
+                  <li className="nav-item">
+                    <button 
+                      className={`nav-link ${paymentType === 'lease' ? 'active' : ''}`}
+                      onClick={() => setPaymentType('lease')}
+                    >
+                      Lease
+                    </button>
+                  </li>
+                  <li className="nav-item">
+                    <button 
+                      className={`nav-link ${paymentType === 'finance' ? 'active' : ''}`}
+                      onClick={() => setPaymentType('finance')}
+                    >
+                      Finance
+                    </button>
+                  </li>
+                </ul>
+
+                {/* Lease Form */}
+                {paymentType === 'lease' && (
+                  <div>
+                    <h6>Lease Details</h6>
+                    <div className="mb-3">
+                      <label className="form-label">Cash Down Payment</label>
+                      <input
+                        type="number"
+                        className="form-control"
+                        placeholder="0"
+                        value={leaseDetails.cashDown}
+                        onChange={(e) => setLeaseDetails({...leaseDetails, cashDown: e.target.value})}
+                      />
+                    </div>
+                    <div className="mb-3">
+                      <label className="form-label">Credit Score</label>
+                      <select 
+                        className="form-select"
+                        value={leaseDetails.creditScore}
+                        onChange={(e) => setLeaseDetails({...leaseDetails, creditScore: e.target.value})}
+                      >
+                        <option value="">Select Credit Score</option>
+                        <option value="excellent">Excellent (750+)</option>
+                        <option value="good">Good (700-749)</option>
+                        <option value="fair">Fair (650-699)</option>
+                        <option value="poor">Poor (600-649)</option>
+                        <option value="extremely-poor">Extremely Poor (Below 600)</option>
+                      </select>
+                    </div>
+                    <div className="mb-3">
+                      <label className="form-label">Lease Term</label>
+                      <select 
+                        className="form-select"
+                        value={leaseDetails.termLength}
+                        onChange={(e) => setLeaseDetails({...leaseDetails, termLength: e.target.value})}
+                      >
+                        <option value="">Select Term</option>
+                        <option value="24">24 Months</option>
+                        <option value="36">36 Months</option>
+                        <option value="48">48 Months</option>
+                        <option value="60">60 Months</option>
+                      </select>
+                    </div>
+                    <div className="mb-3">
+                      <label className="form-label">Annual Mileage</label>
+                      <select 
+                        className="form-select"
+                        value={leaseDetails.annualMileage}
+                        onChange={(e) => setLeaseDetails({...leaseDetails, annualMileage: e.target.value})}
+                      >
+                        <option value="">Select Mileage</option>
+                        <option value="10000">10,000 miles</option>
+                        <option value="12000">12,000 miles</option>
+                        <option value="15000">15,000 miles</option>
+                      </select>
+                    </div>
+                  </div>
+                )}
+
+                {/* Finance Form */}
+                {paymentType === 'finance' && (
+                  <div>
+                    <h6>Finance Details</h6>
+                    <div className="mb-3">
+                      <label className="form-label">Down Payment</label>
+                      <input
+                        type="number"
+                        className="form-control"
+                        placeholder="0"
+                        value={financeDetails.cashDown}
+                        onChange={(e) => setFinanceDetails({...financeDetails, cashDown: e.target.value})}
+                      />
+                    </div>
+                    <div className="mb-3">
+                      <label className="form-label">Credit Score</label>
+                      <select 
+                        className="form-select"
+                        value={financeDetails.creditScore}
+                        onChange={(e) => setFinanceDetails({...financeDetails, creditScore: e.target.value})}
+                      >
+                        <option value="">Select Credit Score</option>
+                        <option value="excellent">Excellent (750+)</option>
+                        <option value="good">Good (700-749)</option>
+                        <option value="fair">Fair (650-699)</option>
+                        <option value="poor">Poor (600-649)</option>
+                        <option value="extremely-poor">Extremely Poor (Below 600)</option>
+                      </select>
+                    </div>
+                    <div className="mb-3">
+                      <label className="form-label">Loan Term</label>
+                      <select 
+                        className="form-select"
+                        value={financeDetails.termLength}
+                        onChange={(e) => setFinanceDetails({...financeDetails, termLength: e.target.value})}
+                      >
+                        <option value="">Select Term</option>
+                        <option value="24">24 Months</option>
+                        <option value="36">36 Months</option>
+                        <option value="48">48 Months</option>
+                        <option value="60">60 Months</option>
+                      </select>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Right Side - Payment Summary */}
+              <div className="col-md-6">
+                <div className="card">
+                  <div className="card-header">
+                    <h6 className="mb-0">
+                      {paymentType === 'lease' ? 'Lease' : 'Finance'} Payment Summary
+                    </h6>
+                  </div>
+                  <div className="card-body">
+                    {selectedModel && selectedTrim && (
+                      <div>
+                        <div className="d-flex justify-content-between mb-2">
+                          <span>Vehicle Price:</span>
+                          <span>${totalPrice.toLocaleString()}</span>
+                        </div>
+                        
+                        {paymentType === 'lease' ? (
+                          <>
+                            <div className="d-flex justify-content-between mb-2">
+                              <span>Cash Down:</span>
+                              <span>-${(parseInt(leaseDetails.cashDown) || 0).toLocaleString()}</span>
+                            </div>
+                            <div className="d-flex justify-content-between mb-2">
+                              <span>Residual Value:</span>
+                              <span>${Math.round(totalPrice * 0.6).toLocaleString()}</span>
+                            </div>
+                            <div className="d-flex justify-content-between mb-2">
+                              <span>Term:</span>
+                              <span>{leaseDetails.termLength || '36'} months</span>
+                            </div>
+                            <div className="d-flex justify-content-between mb-2">
+                              <span>Annual Mileage:</span>
+                              <span>{leaseDetails.annualMileage || '12,000'} miles</span>
+                            </div>
+                            <hr />
+                            <div className="d-flex justify-content-between h5">
+                              <span>Estimated Monthly Payment:</span>
+                              <span className="text-primary">
+                                ${calculateLeasePayment().toLocaleString()}/month
+                              </span>
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            <div className="d-flex justify-content-between mb-2">
+                              <span>Down Payment:</span>
+                              <span>-${(parseInt(financeDetails.cashDown) || 0).toLocaleString()}</span>
+                            </div>
+                            <div className="d-flex justify-content-between mb-2">
+                              <span>Loan Amount:</span>
+                              <span>${(totalPrice - (parseInt(financeDetails.cashDown) || 0)).toLocaleString()}</span>
+                            </div>
+                            <div className="d-flex justify-content-between mb-2">
+                              <span>Interest Rate:</span>
+                              <span>{getInterestRate(financeDetails.creditScore)}%</span>
+                            </div>
+                            <div className="d-flex justify-content-between mb-2">
+                              <span>Term:</span>
+                              <span>{financeDetails.termLength || '60'} months</span>
+                            </div>
+                            <hr />
+                            <div className="d-flex justify-content-between h5">
+                              <span>Estimated Monthly Payment:</span>
+                              <span className="text-primary">
+                                ${calculateFinancePayment().toLocaleString()}/month
+                              </span>
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
+          <div className="modal-footer">
+            <button className="btn btn-outline-secondary" onClick={() => setShowEstimator(false)}>
+              Close
+            </button>
+            <button className="btn btn-primary" onClick={() => setShowEstimator(false)}>
+              Print Estimate
+            </button>
+          </div>
         </div>
       </div>
+    </div>
+    <div 
+      className="modal-backdrop fade show" 
+      onClick={() => setShowEstimator(false)}
+      style={{ zIndex: 1040 }}
+    ></div>
+  </>
+)}      
+      </div>
+
+      
   );
 };
 
