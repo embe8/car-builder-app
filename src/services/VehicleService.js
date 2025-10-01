@@ -272,7 +272,23 @@ async fetchModelsWithTrims(){
     ));
   }
 
-  // Fetch features
+  // Fetch features for a specific model
+// Fetch one model and its features in one query
+async fetchModelWithFeatures(modelId) {
+  const { data, error } = await supabase
+    .from('models')
+    .select(`
+      *,
+      features(*)
+    `)
+    .eq('model_id', modelId)
+    .single(); // because you're only fetching one model
+
+  if (error) throw error;
+  return data; // includes model fields + "features" array
+}
+
+//Fetch all features
   async fetchFeatures() {
     const { data, error } = await supabase
       .from('features')
