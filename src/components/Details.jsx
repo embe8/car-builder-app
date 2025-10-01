@@ -23,31 +23,78 @@ const Details = () => {
   }, [id]);
 
   return (
-    <div className="d-flex flex-column gap-3">
-      {model && (
-        <>
-          <h2>{model.year} {model.model_name}</h2>
-          <p>Fuel Type: {model.fuel_type}</p>
-        </>
-      )}
+    
+    <div className="container my-5">
+    {model && (
+      <div className="card bg-light shadow-sm">
+        <div className="row align-items-md-stretch">
+          <div className="col-md-5">
+            <img
+              src="/images/AI_car_carousel.png"
+              alt="Car"
+              className="img-fluid rounded-start h-100 object-fit-cover"
+            />
+          </div>
+          <div className="col-md-7">
+            <div className="card-body">
+              <h2 className="card-title">{model.year} {model.model_name}</h2>
+              <p className="card-text"><strong>Fuel Type:</strong> {model.fuel_type}</p>
+              <p className="card-text">
+                <strong>Description:</strong> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quisquam, quos.
+              </p>
+              <h4 className="mt-4">Standard Features</h4>
 
-      <h3>Standard Features</h3>
+              {error && <p className="text-danger">{error}</p>}
 
-      {error && <p className="text-danger">{error}</p>}
-
-      {model?.features?.length > 0 ? (
-        <div className="feature-list">
-          {model.features.map((feature) => (
-            <div key={feature.feature_id} className="feature-item">
-              {feature.feature_name}
+              {model.features && model.features.length > 0 ? (
+                <ul className="list-unstyled">
+                  {model.features.map((feature) => (
+                    <li key={feature.feature_id} className="mb-1">
+                      • {feature.feature_name}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No features available for this model.</p>
+              )}
             </div>
-          ))}
+          </div>
+     
         </div>
-      ) : (
-        <p>No features available for this model</p>
-      )}
-    </div>
-  );
+
+      </div>
+      
+    )}
+      {/* Spacing between cards */}
+      <div className="my-4"></div>
+
+      {/* Second Card - Dark Background */}
+      <div className="card bg-dark text-white p-4">
+        <div className="row align-items-md-stretch">
+          <div className="col-md-6">
+            <h4>Additional Info</h4>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
+            </p>
+            <div className="card-img-top bg-light" style={{ height: '200px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div className="text-center text-muted">
+                  <i className="fas fa-car fa-3x mb-2"></i>
+                  <p>Feature Image</p>
+                </div>
+              </div>
+          </div>
+          <div className="col-md-6">
+            <h4>Additional Info</h4>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
+            </p>
+          </div>
+        </div>
+      </div>
+    {!model && !error && <p>Loading...</p>}
+  </div>
+  
+);
 };
 
 export default Details;
