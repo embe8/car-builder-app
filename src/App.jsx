@@ -13,15 +13,15 @@ function App() {
         <div className='container-fluid'>
           <ul className="navbar-nav me-auto">
             <li className="nav-item-logo">
-              <Link className="nav-link" to="/models">Logo</Link>
+              <Link className="nav-link custom-nav-link" to="/home">LOGO</Link>
             </li>
           </ul>
           <ul className="navbar-nav ms-auto">
-            <li className="nav-item">
-              <Link className="nav-link" to="/about">Vehicles</Link>
+            <li className="nav-item-custom-margin">
+              <Link className="nav-link custom-nav-link" to="/models">VEHICLES</Link>
             </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="/about">About</Link>
+            <li className="nav-item-custom-margin">
+              <Link className="nav-link custom-nav-link" to="/about">ABOUT</Link>
             </li>
           </ul>
         </div>

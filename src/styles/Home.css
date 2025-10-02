@@ -34,11 +34,12 @@
   }
   
   /* Style the text inside overlay */
-  .model-card .overlay h5 {
+  .model-card h5 {
     margin: 0;
-    color: white;         /* grey text */
+    color: black;         /* grey text */
     text-decoration: none; /* remove underline if inside <a> */
     font-weight: bold;   /* optional styling */
+    text-align: center;
   }
   
   /* If your overlay is inside an <a>, you might also want: */
@@ -49,6 +50,18 @@
   .model-card a .overlay h5:hover {
     text-decoration: none; /* ensure no underline on hover */
   }
+
+  .custom-margin-left {
+    margin-left: 50px; /* or whatever value you want */
+  }
+
+  .custom-margin-right {
+    margin-right: 50px; /* or whatever value you want */
+  }
+
+
+  
+  
   
   
   
