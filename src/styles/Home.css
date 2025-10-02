@@ -1,0 +1,54 @@
+.carousel-wrapper {
+    width: 100vw;
+    overflow: hidden;
+    margin-left: calc(-50vw + 50%);
+    object-fit: cover;         /* ensures full image is shown */
+    object-position: left;     /* optional: center the image */
+
+
+  }
+
+  .carousel-wrapper img {
+    width: 100%;
+    height: 600px;         /* set desired height */
+    object-fit: fill;     /* fills the area, cropping if needed */
+    object-position: center; /* center image */
+    display: block;        /* remove inline gap */
+  }
+
+  /* The container must be position relative (you already have position-relative) */
+.model-card {
+    position: relative;  /* ensures overlay is positioned relative to this box */
+    overflow: hidden;    /* optional: clip overflow */
+  }
+  
+  /* The overlay container */
+  .model-card .overlay {
+    position: absolute;
+    bottom: 0;            /* place at bottom, or you can use top or center as you like */
+    left: 0;
+    width: 100%;
+    /* You can adjust padding or background if you want contrast */
+    background: black(255, 255, 255, 0.5); /* optional: semi-transparent white/whatever color */
+    text-align: center;
+  }
+  
+  /* Style the text inside overlay */
+  .model-card .overlay h5 {
+    margin: 0;
+    color: white;         /* grey text */
+    text-decoration: none; /* remove underline if inside <a> */
+    font-weight: bold;   /* optional styling */
+  }
+  
+  /* If your overlay is inside an <a>, you might also want: */
+  .model-card a .overlay h5 {
+    text-decoration: none;
+  }
+  
+  .model-card a .overlay h5:hover {
+    text-decoration: none; /* ensure no underline on hover */
+  }
+  
+  
+  

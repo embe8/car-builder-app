@@ -1,34 +1,43 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import '../styles/Home.css';
 
 const Home = () => {
   return (
+   <>
+      {/* Carousel */}
+      <div className='carousel-wrapper'>
+          <div id="carCarousel" className="carousel slide" data-bs-ride="carousel">
+            <div className="carousel-inner">
+                <div className="carousel-item active">
+                <img src="/images/AI_car_carousel.png" className="d-block w-100" alt="Car 1" />
+                </div>
+                <div className="carousel-item">
+                <img src="/images/AI_car2_carousel.png" className="d-block w-100" alt="Car 2" />
+                </div>
+            </div>
+
+            {/* Arrows */}
+            <button className="carousel-control-prev" type="button" data-bs-target="#carCarousel" data-bs-slide="prev">
+                <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span className="visually-hidden">Previous</span>
+            </button>
+            <button className="carousel-control-next" type="button" data-bs-target="#carCarousel" data-bs-slide="next">
+                <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                <span className="visually-hidden">Next</span>
+            </button>
+        </div>
+      </div>
+
+
+
     <div className="container py-5">
       <header className="text-center mb-5">
         <h1 className="display-4 fw-bold">AutoBuilder</h1>
         <p className="lead">Design your own dream car by selecting models, features, and packages.</p>
       </header>
 
-      {/* Carousel */}
-      <div id="carCarousel" className="carousel slide" data-bs-ride="carousel">
-        <div className="carousel-inner">
-            <div className="carousel-item active">
-            <img src="/images/AI_car_carousel.png" className="d-block w-100" alt="Car 1" />
-            </div>
-            <div className="carousel-item">
-            <img src="/images/AI_car2_carousel.png" className="d-block w-100" alt="Car 2" />
-            </div>
-        </div>
 
-        {/* Arrows */}
-        <button className="carousel-control-prev" type="button" data-bs-target="#carCarousel" data-bs-slide="prev">
-            <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span className="visually-hidden">Previous</span>
-        </button>
-        <button className="carousel-control-next" type="button" data-bs-target="#carCarousel" data-bs-slide="next">
-            <span className="carousel-control-next-icon" aria-hidden="true"></span>
-            <span className="visually-hidden">Next</span>
-        </button>
-    </div>
 
       {/* Action Cards */}
       <div className="row">
@@ -73,7 +82,20 @@ const Home = () => {
                         <h5 className="card-title">Model 1</h5>
                       </div>
                     </a>
-                  </div>   
+                  </div>
+                   
+                  <div className='row'>
+                    <div className='col-md-6 mb-2'>
+                    <Link to="/models/model1" className="btn btn-primary">
+                      View Details
+                    </Link>                  
+                    </div>
+                  <div className='col-md-6 mb-2'>
+                  <Link to="/builder" className="btn btn-secondary">
+                        Build Model
+                      </Link>                  
+                    </div>
+                  </div>
                 </div>
                 <div className="col-md-4">
                   <div className="model-card position-relative">
@@ -179,6 +201,7 @@ const Home = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
