@@ -6,6 +6,7 @@ import Package from '../classes/Package.js';
 import TrimPackage from '../classes/TrimPackage.js';
 import Automobile from '../classes/Automobile.js';
 import AddedPackage from '../classes/AddedPackage.js';
+import ModelBody from '../classes/ModelBody.js';
 
 class VehicleService {
   // Fetch manufacturers
@@ -54,7 +55,8 @@ async fetchModelsWithTrims(){
   .select(`
     *,
     manufacturers (manufacturer_name),
-    trims (*)
+    trims (*),
+    model_bodies (*)
     `);
 
     if (modelsError) throw modelsError;
@@ -77,6 +79,7 @@ async fetchModelsWithTrims(){
   //loop over each element (row from query results) 
   return models.map(model => {
     console.log(`Processing model: ${model.model_name}, trims:`, model.trims); // Debug
+    console.log(`Model bodies: ${model.model_bodies.body_name}` )
 
     //for each element create an instance of Model class
     const modelInstance = new Model(
@@ -86,6 +89,8 @@ async fetchModelsWithTrims(){
       model.manufacturer_id,
       model.year,
       model.body_id,
+      model.model_bodies.body_name
+
     //model.fuel_type
     );
 
@@ -142,7 +147,8 @@ async fetchModelsWithTrims(){
       .from('models')
       .select(`
         *,
-        manufacturers (manufacturer_name)
+        manufacturers (manufacturer_name),
+        model_bodies (*)
       `);
 
     if (modelsError) throw modelsError;
@@ -173,7 +179,21 @@ async fetchModelsWithTrims(){
       .from('trim_packages')
       .select('*');
 
+    /*const { data: modelBodies, error: modelBodiesError } = await supabase
+    .from('model_bodies')
+    .select('*');*/
+
+
     if (trimPackagesError) throw trimPackagesError;
+
+    /*const bodyIdToNameMap = {};
+    modelBodies.forEach(body => {
+      bodyIdToNameMap[body.id] = body.name;
+    });*/
+
+
+
+
 
     // Create model instances
     const modelInstances = models.map(model => {
@@ -183,8 +203,18 @@ async fetchModelsWithTrims(){
         model.manufacturer_id,
         model.year,
         model.body_id,
-        model.fuel_type
+        model.model_bodies.body_name
       );
+      //const bodies = modelBodies.filter(body => body.body_id === model.body_id);
+
+      /*bodies.forEach(body => {
+        modelInstance.setBodyName(new ModelBody(
+          body.body_id,
+          body.body_name
+        ));
+      });
+      console.log(bodies);*/
+
 
       if (model.manufacturers) {
         modelInstance.setManufacturerName(model.manufacturers.manufacturer_name);
@@ -201,6 +231,12 @@ async fetchModelsWithTrims(){
           feature.category
         ));
       });
+
+      
+    /*models.forEach(model => {
+      const bodyName = bodyIdToNameMap[model.bodyType];
+      modelInstance.setBodyName(bodyName);
+    });*/
 
       // Add trims to this model
       const modelTrims = trims.filter(trim => trim.model_id === model.model_id);
@@ -246,7 +282,7 @@ async fetchModelsWithTrims(){
 
   // Fetch trims for a specific model
   async fetchTrims(modelId = null) {
-    let query = supabase
+    const query = supabase
       .from('trims')
       .select(`
         *,

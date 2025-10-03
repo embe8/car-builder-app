@@ -60,6 +60,13 @@
   }
 
 
+  .model-card * {
+    pointer-events: auto; /* Allow child elements to still be clickable */
+  }
+
+  
+  
+
   
   
   

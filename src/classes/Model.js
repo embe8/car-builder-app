@@ -1,14 +1,22 @@
+
 class Model {
-    constructor(modelId, modelName, manufacturerId, year, bodyId) {
+    constructor(modelId, modelName, manufacturerId, year, bodyId, bodyName) {
       this.id = modelId;           // maps to model_id
       this.name = modelName;       // maps to model_name  
       this.manufacturer = manufacturerId; // maps to manufacturer_id
       this.year = year;            // maps to year
       this.bodyType = bodyId;    // maps to body_id
+      this.bodyName = bodyName;
       //this.fuelType = fuelType;    // maps to fuel_type
       this.trims = [];
       this.features = [];
     }
+
+  getBodyName(){
+    return `${this.bodyName}`;
+}
+
+  
 
   // Method to set manufacturer name when fetched from manufacturers table
   setManufacturerName(name) {
@@ -63,6 +71,7 @@ class Model {
       year: this.year,
       //basePrice: this.calculateBasePrice(),
       bodyType: this.bodyId,
+      bodyName: this.bodyName,
       //fuelType: this.fuelType,
       trims: this.trims,
       features: this.features,

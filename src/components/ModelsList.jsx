@@ -34,10 +34,13 @@ const ModelsList = () => {
     fetchModels();
   }, []);
 
+  console.log(models.bodyName);
+
   // Get unique body types for filter dropdown
   const availableBodyTypes = useMemo(() => {
-    const bodyTypes = [...new Set(models.map(model => model.bodyType))].filter(Boolean);
-    return bodyTypes.sort();
+    const bodyTypes = [...new Set(models.map(model => model.bodyName))].filter(Boolean);
+    console.log(bodyTypes);
+    return bodyTypes;
   }, [models]);
 
   // Set selected model when build model is clicked
@@ -60,7 +63,7 @@ const ModelsList = () => {
 
     // Body type filter
     if (selectedBodyType) {
-      filtered = filtered.filter(model => model.bodyType === selectedBodyType);
+      filtered = filtered.filter(model => model.bodyName === selectedBodyType);
     }
 
     // Price range filter
@@ -257,7 +260,7 @@ const ModelsList = () => {
                 <h5 className="card-title">{model.getDisplayName()}</h5>
                 
                 <div className="mb-3">
-                  <span className="badge bg-secondary me-2">{model.bodyType}</span>
+                  <span className="badge bg-secondary me-2">{model.bodyName}</span>
                 </div>
 
                 <div className="mb-3">

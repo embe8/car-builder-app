@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../styles/Home.css';
 import VehicleService from '../services/VehicleService';
 
@@ -8,6 +8,7 @@ const Home = () => {
   const [ error, setError ] = useState(null);
   const [ loading, setLoading ] = useState(true);
   const vehicleService = new VehicleService;
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchModels = async () => {
@@ -123,37 +124,46 @@ const Home = () => {
           <div className="carousel-inner">
             {/* First slide - 3 cards */}
             {slides.map((slideModels, slideIndex) => (
-  <div className={`carousel-item ${slideIndex === 0 ? 'active' : ''}`} key={slideIndex}>
-    <div className="row">
-      {slideModels.map((model) => (
-        <div className="col-md-4" key={model.id}>
-          <div className="model-card position-relative">
-            <div>
-            <img 
-              src="/images/AI_car_carousel.png" 
-              className="d-block w-100" 
-              alt={`${model.year} ${model.name}`}
-            />
-              <h5 className="card-title">{`${model.year} ${model.name}`}</h5>
-            </div>
-            <div className='row mt-3'>
-              <div className='col-md-4 mb-2 custom-margin-left'>
-                <Link to={`/models/${model.id}`} className="btn btn-dark" onClick={(e) => e.stopPropagation()}>
-                  View Details
-                </Link>                  
+            <div className={`carousel-item ${slideIndex === 0 ? 'active' : ''}`} key={slideIndex}>
+              <div className="row">
+                {slideModels.map((model) => (
+                  <div className="col-md-4" key={model.id}>
+                    <div className="model-card position-relative">
+                      <div>
+                      <img 
+                        src="/images/AI_car_carousel.png" 
+                        className="d-block w-100" 
+                        alt={`${model.year} ${model.name}`}
+                      />
+                        <h5 className="card-title">{`${model.year} ${model.name}`}</h5>
+                      </div>
+                    
+                    </div>
+                    <div className='row mt-3'>
+                        <div className='col-md-4 mb-2 custom-margin-left'>
+                        <button
+  className="btn btn-dark"
+  onClick={(e) => {
+    e.stopPropagation();
+    navigate(`/models/${model.id}`);
+  }}
+>
+  View Details
+</button>
+               
+                        </div>
+                        <div className='col-md-4 mb-2 custom-margin-left'>
+                          <Link to={`/builder?model=${model.id}`} className="btn btn-secondary" onClick={(e) => e.stopPropagation()}>
+                            Build Model
+                          </Link>                  
+                        </div>
+                      </div>
+                  </div>
+                  
+                ))}
               </div>
-              <div className='col-md-4 mb-2 custom-margin-left'>
-                <Link to={`/builder?model=${model.id}`} className="btn btn-secondary">
-                  Build Model
-                </Link>                  
-              </div>
             </div>
-          </div>
-        </div>
-      ))}
-    </div>
-  </div>
-))}
+          ))}
 
 
           {/* Carousel Controls - Moved inside carousel and positioned further left/right */}

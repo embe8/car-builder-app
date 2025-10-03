@@ -204,7 +204,7 @@ useEffect(() => {
                       
                       <h5>Selected Model: {selectedModel.name}</h5>
                       <p className="mb-2">
-                        <strong>Body Type:</strong> {selectedModel.bodyType} | 
+                        <strong>Body Type:</strong> {selectedModel.bodyName} | 
                         <strong> Year:</strong> {selectedModel.year} | 
                         <strong> Starting Price:</strong> ${selectedModel.calculateBasePrice().toLocaleString()}
                       </p>
