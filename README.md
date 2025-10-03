@@ -2,6 +2,22 @@
 
 A modern React-based web application for browsing, configuring, and customizing vehicles with real-time pricing and payment estimation features.
 
+## Database Schema
+
+![Database Schema](docs/supabase-schema.png)
+
+The application uses the following main database tables. This database was originally created for a Database Fundamentals class and has been extended with a React frontend to provide a complete car configuration experience.
+
+- **manufacturers**: Car manufacturer information
+- **models**: Vehicle models with specifications
+- **trims**: Model trim levels and pricing
+- **features**: Available features for each model
+- **packages**: Optional packages and add-ons
+- **model_bodies**: Body type classifications (SUV, Sedan, etc.)
+- **trim_packages**: Relationship between trims and available packages
+- **automobiles**: Individual vehicle instances
+
+
 ## Features
 
 - **Vehicle Browsing**: Browse available car models with filtering by body type, price range, and manufacturer
@@ -55,16 +71,3 @@ A modern React-based web application for browsing, configuring, and customizing 
 
 6. **Open your browser**
    Navigate to localhost
-
-## Database Schema
-
-The application uses the following main database tables. This was a project for Database Fundamentals class.
-
-- **manufacturers**: Car manufacturer information
-- **models**: Vehicle models with specifications
-- **trims**: Model trim levels and pricing
-- **features**: Available features for each model
-- **packages**: Optional packages and add-ons
-- **model_bodies**: Body type classifications (SUV, Sedan, etc.)
-- **trim_packages**: Relationship between trims and available packages
-- **automobiles**: Individual vehicle instances
