@@ -139,18 +139,18 @@ const Home = () => {
                       </div>
                     
                     </div>
+                    {/* Buttons for lower carousel*/}
                     <div className='row mt-3'>
                         <div className='col-md-4 mb-2 custom-margin-left'>
-                        <button
-  className="btn btn-dark"
-  onClick={(e) => {
-    e.stopPropagation();
-    navigate(`/models/${model.id}`);
-  }}
->
-  View Details
-</button>
-               
+                          <button
+                            className="btn btn-dark"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigate(`/models/${model.id}`);
+                            }}
+                          >
+                            View Details
+                          </button>
                         </div>
                         <div className='col-md-4 mb-2 custom-margin-left'>
                           <Link to={`/builder?model=${model.id}`} className="btn btn-secondary" onClick={(e) => e.stopPropagation()}>
@@ -158,31 +158,44 @@ const Home = () => {
                           </Link>                  
                         </div>
                       </div>
+
                   </div>
-                  
                 ))}
               </div>
             </div>
           ))}
 
 
-          {/* Carousel Controls - Moved inside carousel and positioned further left/right */}
+          {/* Carousel Controls*/}
           <button 
             className="carousel-control-prev" 
             type="button" 
             data-bs-target="#modelsCarousel" 
             data-bs-slide="prev"
-            style={{ left: '-50px' }}
+            style={{ 
+              left: '-60px', 
+              top: '50%', 
+              transform: 'translateY(-50%)',
+              zIndex: 10,
+              position: 'absolute'
+            }}
           >
             <span className="carousel-control-prev-icon" aria-hidden="true"></span>
             <span className="visually-hidden">Previous</span>
           </button>
+
           <button 
             className="carousel-control-next" 
             type="button" 
             data-bs-target="#modelsCarousel" 
             data-bs-slide="next"
-            style={{ right: '-50px' }}
+            style={{ 
+              right: '-60px', 
+              top: '50%', 
+              transform: 'translateY(-50%)',
+              zIndex: 10,
+              position: 'absolute'
+            }}
           >
             <span className="carousel-control-next-icon" aria-hidden="true"></span>
             <span className="visually-hidden">Next</span>

@@ -4,6 +4,8 @@ import Home from './pages/Home';
 import ModelsList from './components/ModelsList';
 import CarBuilder from './components/CarBuilder';
 import Details from './components/Details';
+import About from './pages/About';
+
 import './styles/App.css';
 
 function App() {
@@ -33,6 +35,7 @@ function App() {
           <Route path="/models" element={<ModelsList />} />
           <Route path="/models/:id" element={<Details />} /> 
           <Route path="/builder" element={<CarBuilder />} />
+          <Route path="/about" element={<About />} />
         </Routes>
       </div>
     </Router>
