@@ -246,9 +246,9 @@ async fetchModelsWithTrims(){
           trim.trim_name,
           trim.model_id,
           trim.starting_price,
-          trim.engine,
-          trim.transmission,
-          trim.description
+          //trim.engine,
+          //trim.transmission,
+          //trim.description
         );
 
         // Add packages to this trim

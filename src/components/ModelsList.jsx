@@ -145,7 +145,7 @@ const ModelsList = () => {
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2 className="mb-0">Available Models</h2>
         <div className="d-flex align-items-center gap-3">
-          <span className="badge bg-primary fs-6">{filteredAndSortedModels.length} Models Found</span>
+          <span className="badge bg-secondary fs-6">{filteredAndSortedModels.length} Models Found</span>
           <div className="input-group" style={{ width: '300px' }}>
             <span className="input-group-text">
               <i className="fas fa-search"></i>
@@ -239,7 +239,7 @@ const ModelsList = () => {
                 title="Clear all filters"
               >
                 <i className="fas fa-times"></i>
-              </button>
+              Clear Filters</button>
             </div>
           </div>
         </div>
@@ -268,17 +268,17 @@ const ModelsList = () => {
                 </div>
 
                 <div className="mt-auto">
-                  <div className="d-grid gap-2">
+                  <div className="d-flex gap-2 justify-content-between">
                     <Link 
                       to={`/models/${model.id}`} 
-                      className="btn btn-primary"
+                      className="btn btn-dark"
                       onClick={() => handleSelect(model)}
                     >
                       View Details
                     </Link>
                     <Link 
                       to={`/builder?model=${model.id}`} 
-                      className="btn btn-outline-primary"
+                      className="btn btn-secondary"
                       onClick={() => handleSelect(model)}
                     >
                       Build This Model
