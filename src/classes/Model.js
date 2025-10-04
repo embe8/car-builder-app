@@ -28,7 +28,7 @@ class Model {
   }
 
   addFeature(feature) {
-    this.trims.push(feature);
+    this.features.push(feature);
   }
 
   getDisplayName() {
@@ -67,7 +67,6 @@ class Model {
       id: this.id,
       name: this.name,
       manufacturer: this.manufacturerId,
-      manufacturerName: this.manufacturerName,
       year: this.year,
       //basePrice: this.calculateBasePrice(),
       bodyType: this.bodyId,
