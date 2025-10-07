@@ -2,19 +2,17 @@
     width: 100vw;
     overflow: hidden;
     margin-left: calc(-50vw + 50%);
-    object-fit: cover;         /* ensures full image is shown */
-    object-position: left;     /* optional: center the image */
 
 
   }
 
   .carousel-wrapper img {
     width: 100%;
-    height: 600px;         /* set desired height */
-    object-fit: fill;     /* fills the area, cropping if needed */
-    object-position: center; /* center image */
-    display: block;        /* remove inline gap */
-  }
+    height: 60vh; /* 60% of viewport height instead of fixed 600px */
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
 
   /* The container must be position relative (you already have position-relative) */
 .model-card {
@@ -62,6 +60,10 @@
 
   .model-card * {
     pointer-events: auto; /* Allow child elements to still be clickable */
+  }
+
+  .carousel-wrapper row-mt-3{
+     
   }
 
   

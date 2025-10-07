@@ -156,7 +156,7 @@ useEffect(() => {
       {/* Header */}
       <div className="row mb-4">
         <div className="col-12">
-          <div className="bg-success text-white p-4 rounded">
+          <div className="bg-secondary text-white p-2 rounded">
             <h1 className="display-4 mb-2">Car Builder</h1>
             <p className="lead mb-0">Design your perfect car step by step and see real-time pricing.</p>
           </div>
@@ -176,7 +176,7 @@ useEffect(() => {
                     }`} style={{ width: '40px', height: '40px' }}>
                       {step.number}
                     </div>
-                    <span className={`ms-2 ${step.active ? 'text-primary fw-bold' : 'text-muted'}`}>
+                    <span className={`ms-2 ${step.active ? 'text-dark fw-bold' : 'text-muted'}`}>
                       {step.title}
                     </span>
                     {index < steps.length - 1 && (

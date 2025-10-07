@@ -21,7 +21,7 @@ const ModelsList = () => {
     const fetchModels = async () => {
       try {
         console.log('Fetching models...');
-        const carModels = await vehicleService.fetchModelsWithTrimsAndFeatures();
+        const carModels = await vehicleService.fetchModelsWithTrimsAndFeaturesOptimized();
         console.log('Car models:', carModels);
         setModels(carModels);
       } catch (err) {

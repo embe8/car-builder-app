@@ -7,8 +7,13 @@ import TrimPackage from '../classes/TrimPackage.js';
 import Automobile from '../classes/Automobile.js';
 import AddedPackage from '../classes/AddedPackage.js';
 import ModelBody from '../classes/ModelBody.js';
+import PerformanceMonitor from '../utils/PerformanceMonitor.js';
+
 
 class VehicleService {
+  constructor() {
+    this.monitor = new PerformanceMonitor();
+  }
   // Fetch manufacturers
   async fetchManufacturers() {
     const { data, error } = await supabase
@@ -142,6 +147,7 @@ async fetchModelsWithTrims(){
 
   // Fetch models with trims, features, and packages
   async fetchModelsWithTrimsAndFeatures() {
+    return this.monitor.measureQuery('fetchModelsWithTrimsAndFeatures', async () => {
     // Fetch models with manufacturers
     const { data: models, error: modelsError } = await supabase
       .from('models')
@@ -278,7 +284,107 @@ async fetchModelsWithTrims(){
     });
 
     return modelInstances;
+  });
+}
+
+// OPTIMIZED version
+
+
+
+  // AFTER OPTIMIZATION - Single query with joins
+  async fetchModelsWithTrimsAndFeaturesOptimized() {
+    return this.monitor.measureQuery('fetchModelsWithTrimsAndFeatures_OPTIMIZED', async () => {
+      const { data, error } = await supabase
+        .from('models')
+        .select(`
+          *,
+          manufacturers (manufacturer_name),
+          model_bodies (body_name),
+          trims (
+            *,
+            trim_packages (
+              *,
+              packages (package_name)
+            )
+          ),
+          features (*)
+        `);
+
+      if (error) throw error;
+
+      // Process the optimized data
+      return data.map(model => {
+        const modelInstance = new Model(
+          model.model_id,
+          model.model_name,
+          model.manufacturer_id,
+          model.year,
+          model.body_id,
+          model.model_bodies.body_name
+        );
+
+        if (model.manufacturers) {
+          modelInstance.setManufacturerName(model.manufacturers.manufacturer_name);
+        }
+
+        // Add features
+        if (model.features) {
+          model.features.forEach(feature => {
+            modelInstance.addFeature(new Feature(
+              feature.feature_id,
+              feature.feature_name,
+              feature.model_id,
+              feature.price || 0,
+              feature.category
+            ));
+          });
+        }
+
+        // Add trims
+        if (model.trims) {
+          model.trims.forEach(trim => {
+            const trimInstance = new Trim(
+              trim.trim_id,
+              trim.trim_name,
+              trim.model_id,
+              trim.starting_price
+            );
+
+            // Add packages
+            if (trim.trim_packages) {
+              trim.trim_packages.forEach(tp => {
+                if (tp.packages) {
+                  const packageInstance = new Package(
+                    tp.packages.package_id,
+                    tp.packages.package_name
+                  );
+
+                  const trimPackageInstance = new TrimPackage(
+                    tp.trim_id,
+                    tp.package_id,
+                    tp.cost
+                  );
+                  trimPackageInstance.setPackage(packageInstance);
+                  trimInstance.addTrimPackage(trimPackageInstance);
+                }
+              });
+            }
+
+            modelInstance.addTrim(trimInstance);
+          });
+        }
+
+        return modelInstance;
+      });
+    });
   }
+
+  // Get performance comparison
+  getPerformanceComparison() {
+    return this.monitor.getSummary();
+  }
+
+
 
   // Fetch trims for a specific model
   async fetchTrims(modelId = null) {
