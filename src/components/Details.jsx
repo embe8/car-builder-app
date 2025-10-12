@@ -37,8 +37,7 @@ const Details = () => {
           </div>
           <div className="col-md-7">
             <div className="card-body">
-              <h2 className="card-title">{model.year} {model.model_name}</h2>
-              <p className="card-text"><strong>Fuel Type:</strong> {model.fuel_type}</p>
+              <h2 className="card-title">{model.year} {model.name}</h2>
               <p className="card-text">
                 <strong>Description:</strong> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quisquam, quos.
               </p>
@@ -49,8 +48,8 @@ const Details = () => {
               {model.features && model.features.length > 0 ? (
                 <ul className="list-unstyled">
                   {model.features.map((feature) => (
-                    <li key={feature.feature_id} className="mb-1">
-                      • {feature.feature_name}
+                    <li key={feature.id} className="mb-1">
+                      • {feature.name}
                     </li>
                   ))}
                 </ul>

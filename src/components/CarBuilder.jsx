@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import VehicleService from '../services/VehicleService';
+import { Model, Trim } from '../utils/vehicleData.js';
 
 const CarBuilder = () => {
   const [selectedModel, setSelectedModel] = useState('');
@@ -38,8 +39,8 @@ const CarBuilder = () => {
 const calculateLeasePayment = () => {
   if (!selectedModel || !selectedTrim) return 0;
   
-  const basePrice = selectedModel.calculateBasePrice();
-  const trimPrice = selectedTrim.startingPrice;
+  const basePrice = Model.calculateBasePrice(selectedModel);
+  const trimPrice = Trim.calculateTotalPrice(selectedTrim);;
   const packagesTotal = selectedPackages.reduce((sum, pkg) => sum + pkg.cost, 0);
   const totalPrice = basePrice + trimPrice + packagesTotal;
   
@@ -56,7 +57,7 @@ const calculateLeasePayment = () => {
 const calculateFinancePayment = () => {
   if (!selectedModel || !selectedTrim) return 0;
   
-  const basePrice = selectedModel.calculateBasePrice();
+  const basePrice = Model.calculateBasePrice(selectedModel);
   const trimPrice = selectedTrim.startingPrice;
   const packagesTotal = selectedPackages.reduce((sum, pkg) => sum + pkg.cost, 0);
   const totalPrice = basePrice + trimPrice + packagesTotal;
@@ -206,7 +207,7 @@ useEffect(() => {
                       <p className="mb-2">
                         <strong>Body Type:</strong> {selectedModel.bodyName} | 
                         <strong> Year:</strong> {selectedModel.year} | 
-                        <strong> Starting Price:</strong> ${selectedModel.calculateBasePrice().toLocaleString()}
+                        <strong> Starting Price:</strong> ${Model.calculateBasePrice(selectedModel).toLocaleString()}
                       </p>
                       <button 
                         className="btn btn-primary"
@@ -271,13 +272,13 @@ useEffect(() => {
 {currentStep === 3 && selectedModel && selectedTrim && (
   <div>
     <div className="alert alert-info mb-4">
-      <h5>Building: {selectedModel.getDisplayName()} - {selectedTrim.name}</h5>
+      <h5>Building: {Model.getDisplayName(selectedModel)} - {selectedTrim.name}</h5>
       <p className="mb-0">Add optional packages to customize your vehicle</p>
     </div>
     <h3 className="mb-4">Add Packages</h3>
     <div className="row">
-      {selectedTrim.getPackages() && selectedTrim.getPackages().length > 0 ? (
-        selectedTrim.getPackages().map((packageObj, index) => {
+      {selectedTrim.trimPackages && selectedTrim.trimPackages.length > 0 ? (
+        selectedTrim.trimpPackages.map((packageObj, index) => {
           // Find the corresponding trimPackage to get the cost
           const trimPackage = selectedTrim.trimPackages.find(tp => tp.packageId === packageObj.id);
           return (

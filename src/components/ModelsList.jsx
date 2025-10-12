@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import VehicleService from '../services/VehicleService';
+import { Model } from '../utils/vehicleData.js';
 
 const ModelsList = () => {
   const [models, setModels] = useState([]);
@@ -69,7 +70,7 @@ const ModelsList = () => {
     // Price range filter
     if (priceRange.min || priceRange.max) {
       filtered = filtered.filter(model => {
-        const basePrice = model.calculateBasePrice();
+        const basePrice = Model.calculateBasePrice(model);
         const minPrice = priceRange.min ? parseFloat(priceRange.min) : 0;
         const maxPrice = priceRange.max ? parseFloat(priceRange.max) : Infinity;
         return basePrice >= minPrice && basePrice <= maxPrice;
@@ -82,20 +83,20 @@ const ModelsList = () => {
 
       switch (sortBy) {
         case 'name':
-          aValue = a.name.toLowerCase();
-          bValue = b.name.toLowerCase();
+          aValue = Model.getDisplayName(a).toLowerCase();
+          bValue = Model.getDisplayName(b).toLowerCase();
           break;
         case 'year':
-          aValue = a.year;
-          bValue = b.year;
+          aValue = a.year.toLocaleString();
+          bValue = b.year.toLocaleString();
           break;
         case 'price':
-          aValue = a.calculateBasePrice();
-          bValue = b.calculateBasePrice();
+          aValue = Model.calculateBasePrice(a);
+          bValue = Model.calculateBasePrice(b);
           break;
         default:
-          aValue = a.name.toLowerCase();
-          bValue = b.name.toLowerCase();
+          aValue = Model.getDisplayName(a).toLowerCase();
+          bValue = Model.getDisplayName(b).toLowerCase();
       }
 
       if (sortOrder === 'asc') {
@@ -257,14 +258,18 @@ const ModelsList = () => {
               </div>
               
               <div className="card-body d-flex flex-column">
-                <h5 className="card-title">{model.getDisplayName()}</h5>
+                <h5 className="card-title">{Model.getDisplayName(model)}</h5>
                 
                 <div className="mb-3">
                   <span className="badge bg-secondary me-2">{model.bodyName}</span>
                 </div>
 
                 <div className="mb-3">
-                  <h6 className="text-primary">Starting at ${model.calculateBasePrice().toLocaleString()}</h6>
+                  <h6 className="text-primary">
+                    Starting at ${(model.trims && model.trims.length > 0) 
+                    ? Model.calculateBasePrice(model).toLocaleString() 
+                    : '0'}  
+                  </h6>                
                 </div>
 
                 <div className="mt-auto">
