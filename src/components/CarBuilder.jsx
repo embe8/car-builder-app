@@ -269,63 +269,61 @@ useEffect(() => {
               </div>)}
 
               {/* Step 3: Add Packages */}
-{currentStep === 3 && selectedModel && selectedTrim && (
-  <div>
-    <div className="alert alert-info mb-4">
-      <h5>Building: {Model.getDisplayName(selectedModel)} - {selectedTrim.name}</h5>
-      <p className="mb-0">Add optional packages to customize your vehicle</p>
-    </div>
-    <h3 className="mb-4">Add Packages</h3>
-    <div className="row">
-      {selectedTrim.trimPackages && selectedTrim.trimPackages.length > 0 ? (
-        selectedTrim.trimpPackages.map((packageObj, index) => {
-          // Find the corresponding trimPackage to get the cost
-          const trimPackage = selectedTrim.trimPackages.find(tp => tp.packageId === packageObj.id);
-          return (
-            <div key={packageObj.id} className="col-md-6 mb-3">
-              <div className="card">
-                <div className="card-body">
-                  <div className="form-check">
-                    <input 
-                      className="form-check-input" 
-                      type="checkbox" 
-                      id={`package-${packageObj.id}`}
-                      checked={selectedPackages.some(pkg => pkg.packageId === packageObj.id)}
-                      onChange={(e) => {
-                        if (e.target.checked) {
-                          // Add the trimPackage (which has cost info) to selectedPackages
-                          setSelectedPackages(prev => [...prev, trimPackage]);
-                        } else {
-                          setSelectedPackages(prev => 
-                            prev.filter(pkg => pkg.packageId !== packageObj.id)
-                          );
-                        }
-                      }}
-                    />
-                    <label className="form-check-label" htmlFor={`package-${packageObj.id}`}>
-                      <strong>{packageObj.name}</strong>
-                      <br />
-                      <small className="text-muted">
-                        +${trimPackage?.cost.toLocaleString() || '0'}
-                      </small>
-                    </label>
+              {currentStep === 3 && selectedModel && selectedTrim && (
+                <div>
+                  <div className="alert alert-info mb-4">
+                    <h5>Building: {Model.getDisplayName(selectedModel)} - {selectedTrim.name}</h5>
+                    <p className="mb-0">Add optional packages to customize your vehicle</p>
+                  </div>
+                  <h3 className="mb-4">Add Packages</h3>
+                  <div className="row">
+                    {selectedTrim.trimPackages && selectedTrim.trimPackages.length > 0 ? (
+                      selectedTrim.trimPackages.map((trimPackage, index) => {
+                        return (
+                          <div key={trimPackage.packageId} className="col-md-6 mb-3">
+                            <div className="card">
+                              <div className="card-body">
+                                <div className="form-check">
+                                  <input 
+                                    className="form-check-input" 
+                                    type="checkbox" 
+                                    id={`package-${trimPackage.packageId}`}
+                                    checked={selectedPackages.some(pkg => pkg.packageId === trimPackage.packageId)}
+                                    onChange={(e) => {
+                                      if (e.target.checked) {
+                                        // Add the trimPackage (which has cost info) to selectedPackages
+                                        setSelectedPackages(prev => [...prev, trimPackage]);
+                                      } else {
+                                        setSelectedPackages(prev => 
+                                          prev.filter(pkg => pkg.packageId !== trimPackage.packageId)
+                                        );
+                                      }
+                                    }}
+                                  />
+                                  <label className="form-check-label" htmlFor={`package-${trimPackage.packageId}`}>
+                                    <strong>{trimPackage.package?.name || 'Package name'}</strong>
+                                    <br />
+                                    <small className="text-muted">
+                                      +${trimPackage?.cost.toLocaleString() || '0'}
+                                    </small>
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })
+                    ) : (
+                      <div className="col-12">
+                        <div className="alert alert-warning">
+                          <h5>No Packages Available</h5>
+                          <p>This trim doesn't have any optional packages configured yet.</p>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
-              </div>
-            </div>
-          );
-        })
-      ) : (
-        <div className="col-12">
-          <div className="alert alert-warning">
-            <h5>No Packages Available</h5>
-            <p>This trim doesn't have any optional packages configured yet.</p>
-          </div>
-        </div>
-      )}
-    </div>
-  </div>
-)}
+              )}
               {/* Step 4: Review */}
               {currentStep === 4 && (
                 <div id="print-area">
@@ -333,7 +331,7 @@ useEffect(() => {
                   <div className="alert alert-success">
                     <h5>Your Custom Car</h5>
                     <p className="mb-0">
-                      {selectedModel?.getDisplayName()} {selectedTrim?.name}
+                      {Model?.getDisplayName(selectedModel)} {Trim?.getDisplayName(selectedTrim)}
                       {selectedPackages.length > 0 && ` with ${selectedPackages.length} package${selectedPackages.length > 1 ? 's' : ''}`}
                     </p>
                   </div>
