@@ -66,11 +66,21 @@ const Home = () => {
           <div id="carCarousel" className="carousel slide" data-bs-ride="carousel">
             <div className="carousel-inner">
                 <div className="carousel-item active">
-                <img src="/images/AI_car_carousel.png" className="d-block w-100" alt="Car 1" />
-                </div>
+                <div className="card-img-top bg-light">
+                        <div className="text-center text-muted">
+                          <i className="fas fa-car fa-3x mb-2"></i>
+                          <p>Car Image</p>
+                        </div>
+                      </div>                
+                    </div>
                 <div className="carousel-item">
-                <img src="/images/AI_car2_carousel.png" className="d-block w-100" alt="Car 2" />
-                </div>
+                  <div className="card-img-top bg-light">
+                      <div className="text-center text-muted">
+                        <i className="fas fa-car fa-3x mb-2"></i>
+                        <p>Car Image</p>
+                      </div>
+                  </div>
+              </div>
             </div>
 
             {/* Arrows */}
@@ -87,11 +97,11 @@ const Home = () => {
 
 
 
-<div className="container-fluid py-5 px-0">
-      <header className="text-center mb-5">
-        <h1 className="display-4 fw-bold">AutoBuilder</h1>
-        <p className="lead">Design your own dream car by selecting models, features, and packages.</p>
-      </header>
+    <div className="container-fluid py-5 px-0">
+          <header className="text-center mb-5">
+            <h1 className="display-4 fw-bold">AutoBuilder</h1>
+            <p className="lead">Design your own dream car by selecting models, features, and packages.</p>
+          </header>
 
       {/* Action Cards */}
       <div className="row">
@@ -100,7 +110,7 @@ const Home = () => {
             <div className="card-body">
               <h5 className="card-title">Start Building</h5>
               <p className="card-text">Choose your model, features, and get a live price estimate.</p>
-              <a href="/builder" className="btn btn-secondary">Start Now</a>
+              <a href="/builder?model=null" className="btn btn-secondary">Start Now</a>
             </div>
           </div>
         </div>
@@ -129,15 +139,13 @@ const Home = () => {
                 {slideModels.map((model) => (
                   <div className="col-md-4" key={model.id}>
                     <div className="model-card position-relative">
-                      <div>
-                      <img 
-                        src="/images/AI_car_carousel.png" 
-                        className="d-block w-100" 
-                        alt={`${model.year} ${model.name}`}
-                      />
-                        <h5 className="card-title">{`${model.year} ${model.name}`}</h5>
+                      <div className="card-img-top bg-light" style={{ height: '200px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <div className="text-center text-muted">
+                          <i className="fas fa-car fa-3x mb-2"></i>
+                          <p>Car Image</p>
+                        </div>
                       </div>
-                    
+                      <h5 className="card-title">{`${model.year} ${model.name}`}</h5>
                     </div>
                     {/* Buttons for lower carousel*/}
                     <div className='row mt-3'>
@@ -158,7 +166,6 @@ const Home = () => {
                           </Link>                  
                         </div>
                       </div>
-
                   </div>
                 ))}
               </div>

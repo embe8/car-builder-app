@@ -1,7 +1,7 @@
 const About = () => {
 return(
   <div>
-    <p>For educational purposes only</p>
+    <p>Created for portfolio and educational purposes only</p>
   </div>
 )}
 export default About;
