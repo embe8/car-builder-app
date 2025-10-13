@@ -13,9 +13,9 @@ const Home = () => {
   useEffect(() => {
     const fetchModels = async () => {
       try {
-        console.log('Fetching models...');
+        // console.log('Fetching models...');
         const carModels = await vehicleService.fetchModelsWithTrims();
-        console.log('Car models:', carModels);
+        // console.log('Car models:', carModels);
         setModels(carModels);
       } catch (err) {
         console.error('Error fetching models:', err);
@@ -55,7 +55,7 @@ const Home = () => {
   };
   // pass desired number of divisions
   const slides = chunkArray(featuredModels, 3);
-  console.log(slides.length);
+  // console.log(slides.length);
 
 
   

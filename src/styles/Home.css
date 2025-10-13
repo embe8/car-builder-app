@@ -2,8 +2,6 @@
     width: 100vw;
     overflow: hidden;
     margin-left: calc(-50vw + 50%);
-
-
   }
 
   .carousel-wrapper .card-img-top.bg-light {
@@ -26,21 +24,18 @@
     bottom: 0;            /* place at bottom, or you can use top or center as you like */
     left: 0;
     width: 100%;
-    /* You can adjust padding or background if you want contrast */
-    background: black(255, 255, 255, 0.5); /* optional: semi-transparent white/whatever color */
-    text-align: center;
+    background: black(255, 255, 255, 0.5); 
   }
   
   /* Style the text inside overlay */
   .model-card h5 {
     margin: 0;
-    color: black;         /* grey text */
+    color: black;        
     text-decoration: none; /* remove underline if inside <a> */
     font-weight: bold;   /* optional styling */
     text-align: center;
   }
   
-  /* If your overlay is inside an <a>, you might also want: */
   .model-card a .overlay h5 {
     text-decoration: none;
   }
@@ -50,13 +45,12 @@
   }
 
   .custom-margin-left {
-    margin-left: 50px; /* or whatever value you want */
+    margin-left: 50px;
   }
 
   .custom-margin-right {
-    margin-right: 50px; /* or whatever value you want */
+    margin-right: 50px; 
   }
-
 
   .model-card * {
     pointer-events: auto; /* Allow child elements to still be clickable */

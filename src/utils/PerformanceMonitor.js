@@ -23,7 +23,7 @@ class PerformanceMonitor {
         };
         
         this.metrics.push(metric);
-        console.log(`✅ ${queryName}: ${metric.executionTime.toFixed(2)}ms`);
+        // console.log(` ${queryName}: ${metric.executionTime.toFixed(2)}ms`);
         
         return result;
       } catch (error) {
@@ -37,7 +37,7 @@ class PerformanceMonitor {
         };
         
         this.metrics.push(metric);
-        console.error(`❌ ${queryName}: ${metric.executionTime.toFixed(2)}ms - ${error.message}`);
+        console.error(`Error${queryName}: ${metric.executionTime.toFixed(2)}ms - ${error.message}`);
         throw error;
       }
     }

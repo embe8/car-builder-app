@@ -1,6 +1,6 @@
 import { supabase } from '../supabaseClient.js';
 import PerformanceMonitor from '../utils/PerformanceMonitor.js';
-import { Model, Trim, Feature, Package, TrimPackage, Automobile, AddedPackage } from '../utils/vehicleData.js'
+import { Model, Trim, Feature, Automobile } from '../utils/vehicleData.js'
 
 class VehicleService {
   constructor() {
@@ -49,12 +49,11 @@ async fetchModelsWithTrims(){
 
   if (modelsError) throw modelsError;
 
-  console.log('Raw models data:', models); // Debug
+  //console.log('Raw models data:', models);
 
-  // Much simpler - just map using the factory method
   return models.map(model => {
-    console.log(`Processing model: ${model.model_name}, trims:`, model.trims); // Debug
-    console.log(`Model bodies: ${model.model_bodies.body_name}`)
+    //console.log(`Processing model: ${model.model_name}, trims:`, model.trims); // Debug
+    //console.log(`Model bodies: ${model.model_bodies.body_name}`)
     
     return Model.fromSupabase(model);
   });
@@ -62,7 +61,6 @@ async fetchModelsWithTrims(){
 
   // Fetch models with trims, features, and packages
   async fetchModelsWithTrimsAndFeatures() {
-        // Fetch models with manufacturers
     const { data: models, error: modelsError } = await supabase
     .from('models')
     .select(`
@@ -80,21 +78,16 @@ async fetchModelsWithTrims(){
 
     if (modelsError) throw modelsError;
 
-    console.log('Raw models data:', models); // Debug
+    //console.log('Raw models data:', models); // Debug
 
     // Much simpler - just map using the factory method
     return models.map(model => {
-      console.log(`Processing model: ${model.model_name}, trims:`, model.trims); // Debug
-      console.log(`Model features: ${model.features}`)
+      //console.log(`Processing model: ${model.model_name}, trims:`, model.trims); // Debug
+      //console.log(`Model features: ${model.features}`)
       
       return Model.fromSupabase(model);
     });
   }
-
-
-// OPTIMIZED version
-
-
 
   // AFTER OPTIMIZATION - Single query with joins
   async fetchModelsWithTrimsAndFeaturesOptimized() {
@@ -125,7 +118,6 @@ async fetchModelsWithTrims(){
     return this.monitor.getSummary();
   }
 
-
   // Fetch trims for a specific model
   async fetchTrims(modelId = null) {
     // build query conditionally
@@ -145,7 +137,7 @@ async fetchModelsWithTrims(){
 
 // Fetch features for a specific model
 async fetchModelWithFeatures(modelId) {
-  console.log('Fetching models with features with model id: ', modelId);
+  // console.log('Fetching models with features with model id: ', modelId);
   const { data, error } = await supabase
     .from('models')
     .select(`
@@ -171,21 +163,6 @@ async fetchModelWithFeatures(modelId) {
     return data.map(feature => Feature.fromSupabase(feature));
   }
 
-  /* Fetch packages
-  async fetchTrimPackages() {
-    const { data, error } = await supabase
-      .from('trim_packages')
-      .select('*');
-
-    if (error) throw error;
-
-    return data.map(pkg => new TrimPackage(
-      pkg.package_id,
-      pkg.trim_id,
-      pkg.cost,
-      pkg.package
-    ));
-  }*/
 
   // Fetch automobiles with packages
   async fetchAutomobilesWithPackages() {

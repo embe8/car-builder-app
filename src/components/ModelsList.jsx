@@ -21,9 +21,9 @@ const ModelsList = () => {
   useEffect(() => {
     const fetchModels = async () => {
       try {
-        console.log('Fetching models...');
+        // console.log('Fetching models...');
         const carModels = await vehicleService.fetchModelsWithTrimsAndFeaturesOptimized();
-        console.log('Car models:', carModels);
+        // console.log('Car models:', carModels);
         setModels(carModels);
       } catch (err) {
         console.error('Error fetching models:', err);
@@ -35,12 +35,12 @@ const ModelsList = () => {
     fetchModels();
   }, []);
 
-  console.log(models.bodyName);
+  // console.log(models.bodyName);
 
   // Get unique body types for filter dropdown
   const availableBodyTypes = useMemo(() => {
     const bodyTypes = [...new Set(models.map(model => model.bodyName))].filter(Boolean);
-    console.log(bodyTypes);
+    // console.log(bodyTypes);
     return bodyTypes;
   }, [models]);
 
