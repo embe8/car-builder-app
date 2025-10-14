@@ -11,21 +11,41 @@ import './styles/App.css';
 function App() {
   return (
     <Router>
-      <nav className='navbar navbar-expand-lg navbar-dark bg-dark custom-navbar'>
-        <div className='container-fluid'>
-          <ul className="navbar-nav me-auto">
-            <li className="nav-item-logo">
-              <Link className="nav-link custom-nav-link" to="/home">LOGO</Link>
-            </li>
-          </ul>
-          <ul className="navbar-nav ms-auto">
-            <li className="nav-item-custom-margin">
-              <Link className="nav-link custom-nav-link" to="/models">VEHICLES</Link>
-            </li>
-            <li className="nav-item-custom-margin">
-              <Link className="nav-link custom-nav-link" to="/about">ABOUT</Link>
-            </li>
-          </ul>
+      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div className="container-fluid">
+          {/* Brand/Logo */}
+          <Link className="navbar-brand" to="/home">
+            LOGO
+          </Link>
+          
+          {/* Mobile toggle button */}
+          <button 
+            className="navbar-toggler" 
+            type="button" 
+            data-bs-toggle="collapse" 
+            data-bs-target="#navbarNav" 
+            aria-controls="navbarNav" 
+            aria-expanded="false" 
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          
+          {/* Collapsible content */}
+          <div className="collapse navbar-collapse" id="navbarNav">
+            <ul className="navbar-nav ms-auto">
+              <li className="nav-item">
+                <Link className="nav-link" to="/models">
+                  VEHICLES
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/about">
+                  ABOUT
+                </Link>
+              </li>
+            </ul>
+          </div>
         </div>
       </nav>
       <div className="container mt-5">
