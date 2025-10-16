@@ -6,7 +6,6 @@ import { Model, Trim } from '../utils/vehicleData.js';
 const CarBuilder = () => {
   const [selectedModel, setSelectedModel] = useState('');
   const [selectedTrim, setSelectedTrim] = useState(null);
-  const [selectedFeatures, setSelectedFeatures] = useState([]);
   const [selectedPackages, setSelectedPackages] = useState([]);
   const [currentStep, setCurrentStep] = useState(1);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -15,7 +14,6 @@ const CarBuilder = () => {
   const openEstimator = () => setShowEstimator(true);
   const closeEstimator = () => setShowEstimator(false);
   // payment estimator
-  // Add these states after your existing state declarations
   const [paymentType, setPaymentType] = useState('lease'); // 'lease' or 'finance'
   const [leaseDetails, setLeaseDetails] = useState({
     cashDown: '',
@@ -35,7 +33,6 @@ const CarBuilder = () => {
   };
   
   // payment estimator function
-  // Add these functions after your existing functions
 const calculateLeasePayment = () => {
   if (!selectedModel || !selectedTrim) return 0;
   
@@ -44,7 +41,6 @@ const calculateLeasePayment = () => {
   const packagesTotal = selectedPackages.reduce((sum, pkg) => sum + pkg.cost, 0);
   const totalPrice = basePrice + trimPrice + packagesTotal;
   
-  // Simple lease calculation (you can make this more sophisticated)
   const capitalizedCost = totalPrice - (parseInt(leaseDetails.cashDown) || 0);
   const residualValue = totalPrice * 0.6; // 60% residual
   const depreciation = capitalizedCost - residualValue;
